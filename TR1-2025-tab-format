@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technical Round 1 - 2025</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+    }
+    .sidebar {
+      width: 250px;
+      background: #2c3e50;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+    .sidebar h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    .tab-button {
+      background: none;
+      border: none;
+      color: white;
+      text-align: left;
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .tab-button:hover, .tab-button.active {
+      background: #34495e;
+    }
+    .content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .task {
+      background: #f4f4f4;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      display: none;
+    }
+    .task.active {
+      display: block;
+    }
+    .task h3 {
+      margin-top: 0;
+    }
+    .subtask {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 20px; /* Optional: adds spacing between text and buttons */
+      flex-wrap: wrap;
+
+    }
+    .subtask span {
+      felx-shrink; 0; /* Prevent buttons from shrinking */
+    }
+
+    .subtask {
+      word-break: break-word;
+    }
+
+    .buttons button {
+      margin-left: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      min-width: 80px;
+    }
+    .done {
+      background-color: #2ecc71;
+      color: white;
+    }
+    .revisit {
+      background-color: #e67e22;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Sections</h2>
+    <button class="tab-button" onclick="showTab('task1', this)">1. System Info</button>
+    <button class="tab-button" onclick="showTab('task2', this)">2. Terminal Tasks</button>
+    <button class="tab-button" onclick="showTab('task3', this)">3. User Login Issue</button>
+    <button class="tab-button" onclick="showTab('task4', this)">4. Remote Server Info</button>
+    <button class="tab-button" onclick="showTab('task5', this)">5. Permissions</button>
+    <button class="tab-button" onclick="showTab('task6', this)">6. Find & File Tasks</button>
+  </div>
+  <div class="content">
+    <div id="task1" class="task active">
+      <h3>1. Collect System Information and Store in ~/eval_info.txt</h3>
+      <div class="subtask">a) Retrieve the number of CPUs attached to your machine, along with the make and/n model of the CPU, and redirect the output to the file above.
+ <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">b) Your team lead urgently needs details about all attached devices and disk partitions. Append this information to the same file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">c) Extract your default shell information from /etc/passwd and append the output to the above file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">d) Append the last five lines of the /etc/group file to ~/eval_info.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">e) Append the first three lines of /etc/resolv.conf to the same file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+    </div>
+    <div id="task2" class="task">
+      <h3>2. Perform the Following Tasks on Your Terminal</h3>
+      <div class="subtask">a) Create a copy of /etc/passwd, preserving the timestamp, and save it as back-up-passwd in your home directory. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">b) Add the text "Hey! I am taking my first evaluation" to ~/info_file.txt.
+ <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">c) Create a symbolic (soft) link named ~/info_link.txt that points to ~/info_file.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">d) Create a hard link named first_hard_link.txt that points to ~/info_file.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">e) Count the number of lines in /etc/passwd and append the result to ~/info_file.txt without overwriting its existing content.
+ <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+    </div>
+    <div id="task3" class="task">
+      <h3>3. User Login Issue – Investigation Report (~/server-info.txt)</h3>
+      <div class="subtask">a) Check how long the system Linoop.ddns.net has been running, and store the output. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">b) Verify whether the testuser account exists using appropriate commands (without reading any file). <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">c) Read the contents of /etc/resolv.conf and append them to ~/server-info.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">d) Extract all lines containing the string root from /etc/passwd and store them in the same file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">e) Identify how to extract both root and ssh patterns from /etc/passwd. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+    </div>
+    <div id="task4" class="task">
+      <h3>4. You are login in the linoop.ddns.net remote server. Get following information and store in ~/linoop_server.info Info</h3>
+      <div class="subtask">a) Identify which user you are logged in as on the server. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">b) Use the appropriate command to get detailed information about the host. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">c) Retrieve the absolute path of your home directory.
+ <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">d) Check the OS release version of linoop.ddns.net
+ <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">e) Get the permissions of your home directory. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+    </div>
+    <div id="task5" class="task">
+      <h3>5. Directory and File Permissions – Practice Tasks</h3>
+      <div class="subtask">a) Create a nested directory structure: ~/prod/dev/test. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">b) Inside the dev directory, create an empty file named new-file.txt. Change its permissions like: allow owner to execute, group should be able to write, and others have no access.
+ <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">c) In the prod directory, create a file named prod-file1. Change its ownership so the owner is new-user and the group is admin. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">d) Inside the test directory, create two subdirectories: test-dir1 and test-dir2. Change the ownership of the test directory and all its contents so the owner is new-user and the group is students.<span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">e) Create a directory structure: ~/database/users/data.
+   Verify it using the tree command, then delete the “users” directory. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+    </div>
+    <div id="task6" class="task">
+      <h3>6. Find Command and File Management Tasks (~/first_eval.txt) Tasks</h3>
+      <div class="subtask">a) Find all .txt files owned by your current user and store the list in ~/first_eval.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">b) Find all .log files under /var/log, list them with ls -lh, and save the output to ~/log_files. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">c) Find all .conf files under /etc and copy them into ~/first_eval.txt.
+ <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">d) Your manager needs a list of all .py files under the /opt directory.
+   Use long listing and redirect the output to the same file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">e) Locate a file named messages under the /var directory and append its details to ~/eval_info.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+    </div>
+  </div>
+
+  <script>
+    function showTab(id, el) {
+      document.querySelectorAll('.task').forEach(t => t.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    document.querySelectorAll('.buttons button').forEach(button => {
+      button.addEventListener('click', function () {
+        const parent = button.closest('.subtask');
+        const allButtons = parent.querySelectorAll('button');
+        allButtons.forEach(btn => btn.classList.remove('done', 'revisit'));
+
+        if (button.textContent === 'Done') {
+          button.classList.add('done');
+        } else if (button.textContent === 'Revisit') {
+          button.classList.add('revisit');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
