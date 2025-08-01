@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Technical Round 1 - 2025</title>
+  <title>Technical Screening Round 1 - 2025</title>
   <style>
     body {
       margin: 0;
@@ -118,11 +118,11 @@
     </div>
     <div id="task3" class="task">
       <h3>3. User Login Issue – Investigation Report (~/server-info.txt)</h3>
-      <div class="subtask">a) Check how long the system Linoop.ddns.net has been running, and store the output. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">b) Verify whether the testuser account exists using appropriate commands (without reading any file). <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">a) Check how long the system linoop.ddns.net has been running, and store the output in ~/server-info.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">b) Verify whether the testuser account exists using appropriate command (without reading any file). Please add output in ~/server-info without overwriting it's contents. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">c) Read the contents of /etc/resolv.conf and append them to ~/server-info.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">d) Extract all lines containing the string root from /etc/passwd and store them in the same file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">e) Identify how to extract both root and ssh patterns from /etc/passwd. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">d) Extract all lines containing the string root from /etc/passwd and store them in the ~/server-info.txt file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">e) Identify how to extract both root and ssh patterns from /etc/passwd and append out in ~/server-info.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
     </div>
     <div id="task4" class="task">
       <h3>4. You are login in the linoop.ddns.net remote server. Get following information and store in ~/linoop_server.info Info</h3>
@@ -137,7 +137,7 @@
     <div id="task5" class="task">
       <h3>5. Directory and File Permissions – Practice Tasks</h3>
       <div class="subtask">a) Create a nested directory structure: ~/prod/dev/test. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">b) Inside the dev directory, create an empty file named new-file.txt. Change its permissions like: allow owner to execute, group should be able to write, and others have no access.
+      <div class="subtask">b) Inside the dev directory, create an empty file named new-file.txt. Change its permissions like add execute permission for owner, add write permission for group, and others have no access.
  <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">c) In the prod directory, create a file named prod-file1. Change its ownership so the owner is new-user and the group is admin. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">d) Inside the test directory, create two subdirectories: test-dir1 and test-dir2. Change the ownership of the test directory and all its contents so the owner is new-user and the group is students.<span class="buttons"><button>Done</button><button>Revisit</button></span></div>
@@ -146,13 +146,13 @@
     </div>
     <div id="task6" class="task">
       <h3>6. Find Command and File Management Tasks (~/first_eval.txt) Tasks</h3>
-      <div class="subtask">a) Find all .txt files owned by your current user and store the list in ~/first_eval.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">b) Find all .log files under /var/log, list them with ls -lh, and save the output to ~/log_files. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">c) Find all .conf files under /etc and copy them into ~/first_eval.txt.
+      <div class="subtask">a) Find all .txt files user your home directory, owned by your current user and store the list in ~/first_eval.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">b) Find all the files under /var/log directory, having size above 50M, and save the output to ~/first_eval.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">c) Find all .conf files under /etc directory, and copy these files inside ~/database directory.
  <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">d) Your manager needs a list of all .py files under the /opt directory.
-   Use long listing and redirect the output to the same file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">e) Locate a file named messages under the /var directory and append its details to ~/eval_info.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+   Use long listing and redirect the output to ~/first_eval.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">e) Locate a file named messages under the /var directory and append its metadata to ~/first_eval.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
     </div>
   </div>
 
@@ -181,3 +181,4 @@
   </script>
 </body>
 </html>
+
