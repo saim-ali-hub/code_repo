@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Technical Screening Round 1 - 2025</title>
+  <title>PROTO TECHNICAL SCREENING ROUND 1 - 2025</title>
   <style>
     body {
       margin: 0;
@@ -92,9 +92,8 @@
     <button class="tab-button" onclick="showTab('task1', this)">1. System Info</button>
     <button class="tab-button" onclick="showTab('task2', this)">2. Terminal Tasks</button>
     <button class="tab-button" onclick="showTab('task3', this)">3. User Login Issue</button>
-    <button class="tab-button" onclick="showTab('task4', this)">4. Remote Server Info</button>
-    <button class="tab-button" onclick="showTab('task5', this)">5. Permissions</button>
-    <button class="tab-button" onclick="showTab('task6', this)">6. Find & File Tasks</button>
+    <button class="tab-button" onclick="showTab('task5', this)">4. Permissions</button>
+    <button class="tab-button" onclick="showTab('task6', this)">5. Find & File Tasks</button>
   </div>
   <div class="content">
     <div id="task1" class="task active">
@@ -102,7 +101,7 @@
       <div class="subtask">a) Retrieve the number of CPUs attached to your machine, along with the make and/n model of the CPU, and redirect the output to the file above.
  <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">b) Your team lead urgently needs details about all attached devices and disk partitions. Append this information to the same file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">c) Extract your default shell information from /etc/passwd and append the output to the above file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">c) Check the OS release version of linoop.ddns.net <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">d) Append the last five lines of the /etc/group file to ~/eval_info.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">e) Append the first three lines of /etc/resolv.conf to the same file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
     </div>
@@ -125,16 +124,6 @@
       <div class="subtask">e) Identify how to extract both root and ssh patterns from /etc/passwd and append out in ~/server-info.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
     </div>
     <div id="task4" class="task">
-      <h3>4. You are login in the linoop.ddns.net remote server. Get following information and store in ~/linoop_server.info Info</h3>
-      <div class="subtask">a) Identify which user you are logged in as on the server. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">b) Use the appropriate command to get detailed information about the host. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">c) Retrieve the absolute path of your home directory.
- <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">d) Check the OS release version of linoop.ddns.net
- <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">e) Get the permissions of your home directory. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-    </div>
-    <div id="task5" class="task">
       <h3>5. Directory and File Permissions – Practice Tasks</h3>
       <div class="subtask">a) Create a nested directory structure: ~/prod/dev/test. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">b) Inside the dev directory, create an empty file named new-file.txt. Change its permissions like add execute permission for owner, add write permission for group, and others have no access.
@@ -144,7 +133,7 @@
       <div class="subtask">e) Create a directory structure: ~/database/users/data.
    Verify it using the tree command, then delete the “users” directory. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
     </div>
-    <div id="task6" class="task">
+    <div id="task5" class="task">
       <h3>6. Find Command and File Management Tasks (~/first_eval.txt) Tasks</h3>
       <div class="subtask">a) Find all .txt files user your home directory, owned by your current user and store the list in ~/first_eval.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">b) Find all the files under /var/log directory, having size above 50M, and save the output to ~/first_eval.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
