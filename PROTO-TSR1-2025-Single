@@ -184,7 +184,7 @@
 
     <input type="radio" id="q4c" name="q4">
     <label class="tab-label" for="q4c">c)</label>
-    <div class="tab-content">In the prod directory, create a file named prod-file1. Change its ownership so the owner is new-user and the group is admin.<span class="buttons"><button class="done">Done</button> <button class="revisit">Revisit</button></span></div>
+    <div class="tab-content">In the prod directory, create a file named prod-file1. Change its ownership so the owner is new-user and the group is admins.<span class="buttons"><button class="done">Done</button> <button class="revisit">Revisit</button></span></div>
 
     <input type="radio" id="q4d" name="q4">
     <label class="tab-label" for="q4d">d)</label>
