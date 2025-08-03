@@ -128,7 +128,7 @@
       <div class="subtask">a) Create a nested directory structure: ~/prod/dev/test. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">b) Inside the dev directory, create an empty file named new-file.txt. Change its permissions like add execute permission for owner, add write permission for group, and others have no access.
  <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">c) In the prod directory, create a file named prod-file1. Change its ownership so the owner is new-user and the group is admin. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">c) In the prod directory, create a file named prod-file1. Change its ownership so the owner is new-user and the group is admins. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">d) Inside the test directory, create two subdirectories: test-dir1 and test-dir2. Change the ownership of the test directory and all its contents so the owner is new-user and the group is students.<span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">e) Create a directory structure: ~/database/users/data.
    Verify it using the tree command, then delete the “users” directory. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
