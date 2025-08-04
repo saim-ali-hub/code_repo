@@ -155,7 +155,7 @@
 
     <input type="radio" id="q3b" name="q3">
     <label class="tab-label" for="q3b">b)</label>
-    <div class="tab-content">Verify whether the testuser account exists using appropriate commands (without reading any file).<span class="buttons"><button class="done">Done</button> <button class="revisit">Revisit</button></span></div>
+    <div class="tab-content">Verify whether the test-user account exists using appropriate commands (without reading any file).<span class="buttons"><button class="done">Done</button> <button class="revisit">Revisit</button></span></div>
 
     <input type="radio" id="q3c" name="q3">
     <label class="tab-label" for="q3c">c)</label>
