@@ -125,7 +125,7 @@
       <div class="subtask">b) Append all lines containing the word nologin from /etc/passwd, in above file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">c) Display last first 2 lines of /etc/hosts file and append to the file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">d) Count the number of lines in /etc/nsswitch.conf and store that count in the same file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">e) Display last 5 lines of /etc/group file and append to the file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">e) Display last 5 lines of /tmp/sshd_config file and append to the file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
     </div>
 
     <div id="task5" class="task">
