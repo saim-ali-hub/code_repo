@@ -58,18 +58,13 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 10px;
-      gap: 20px; /* Optional: adds spacing between text and buttons */
+      gap: 20px;
       flex-wrap: wrap;
-
-    }
-    .subtask span {
-      felx-shrink; 0; /* Prevent buttons from shrinking */
-    }
-
-    .subtask {
       word-break: break-word;
     }
-
+    .subtask span {
+      flex-shrink: 0;
+    }
     .buttons button {
       margin-left: 5px;
       padding: 5px 10px;
@@ -92,58 +87,55 @@
     <button class="tab-button" onclick="showTab('task1', this)">1. System Info</button>
     <button class="tab-button" onclick="showTab('task2', this)">2. Terminal Tasks</button>
     <button class="tab-button" onclick="showTab('task3', this)">3. User Login Issue</button>
-    <button class="tab-button" onclick="showTab('task5', this)">4. Permissions</button>
-    <button class="tab-button" onclick="showTab('task6', this)">5. Find & File Tasks</button>
+    <button class="tab-button" onclick="showTab('task4', this)">4. Permissions</button>
+    <button class="tab-button" onclick="showTab('task5', this)">5. Find & File Tasks</button>
   </div>
+
   <div class="content">
     <div id="task1" class="task active">
       <h3>1. Collect System Information and Store in ~/eval_info.txt</h3>
-      <div class="subtask">a) Retrieve the number of CPUs attached to your machine, along with the make and/n model of the CPU, and redirect the output to the file above.
- <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">a) Retrieve the number of CPUs attached to your machine, along with the make and/n model of the CPU, and redirect the output to the file above. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">b) Your team lead urgently needs details about all attached devices and disk partitions. Append this information to the same file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">c) Check the OS release version of linoop.ddns.net <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">d) Append the last five lines of the /etc/group file to ~/eval_info.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">e) Append the first three lines of /etc/resolv.conf to the same file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
     </div>
+
     <div id="task2" class="task">
       <h3>2. Perform the Following Tasks on Your Terminal</h3>
       <div class="subtask">a) Create a copy of /etc/passwd, preserving the timestamp, and save it as back-up-passwd in your home directory. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">b) Add the text "Hey! I am taking my first evaluation" to ~/info_file.txt.
- <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">b) Add the text "Hey! I am taking my first evaluation" to ~/info_file.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">c) Create a symbolic (soft) link named ~/info_link.txt that points to ~/info_file.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">d) Create a hard link named first_hard_link.txt that points to ~/info_file.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">e) Count the number of lines in /etc/passwd and append the result to ~/info_file.txt without overwriting its existing content.
- <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">e) Count the number of lines in /etc/passwd and append the result to ~/info_file.txt without overwriting its existing content. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
     </div>
+
     <div id="task3" class="task">
       <h3>3. User Login Issue – Investigation Report (~/server-info.txt)</h3>
       <div class="subtask">a) Check how long the system linoop.ddns.net has been running, and store the output in ~/server-info.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">b) Verify whether the testuser account exists using appropriate command (without reading any file). Please add output in ~/server-info without overwriting it's contents. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">b) Verify whether the testuser account exists using appropriate command (without reading any file). Please add output in ~/server-info without overwriting its contents. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">c) Read the contents of /etc/resolv.conf and append them to ~/server-info.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">d) Extract all lines containing the string root from /etc/passwd and store them in the ~/server-info.txt file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">e) Identify how to extract both root and ssh patterns from /etc/passwd and append out in ~/server-info.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
     </div>
+
     <div id="task4" class="task">
-      <h3>5. Directory and File Permissions – Practice Tasks</h3>
+      <h3>4. Directory and File Permissions – Practice Tasks</h3>
       <div class="subtask">a) Create a nested directory structure: ~/prod/dev/test. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">b) Inside the dev directory, create an empty file named new-file.txt. Change its permissions like add execute permission for owner, add write permission for group, and others have no access.
- <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">b) Inside the dev directory, create an empty file named new-file.txt. Change its permissions like add execute permission for owner, add write permission for group, and others have no access. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">c) In the prod directory, create a file named prod-file1. Change its ownership so the owner is new-user and the group is admins. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">d) Inside the test directory, create two subdirectories: test-dir1 and test-dir2. Change the ownership of the test directory and all its contents so the owner is new-user and the group is students.<span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">e) Create a directory structure: ~/database/users/data.
-   Verify it using the tree command, then delete the “users” directory. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">d) Inside the test directory, create two subdirectories: test-dir1 and test-dir2. Change the ownership of the test directory and all its contents so the owner is new-user and the group is students. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">e) Create a directory structure: ~/database/users/data. Verify it using the tree command, then delete the “users” directory. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
     </div>
+
     <div id="task5" class="task">
-      <h3>6. Find Command and File Management Tasks (~/first_eval.txt) Tasks</h3>
-      <div class="subtask">a) Find all .txt files user your home directory, owned by your current user and store the list in ~/first_eval.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <h3>5. Find Command and File Management Tasks (~/first_eval.txt) Tasks</h3>
+      <div class="subtask">a) Find all .txt files under your home directory, owned by your current user and store the list in ~/first_eval.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">b) Find all the files under /var/log directory, having size above 50M, and save the output to ~/first_eval.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">c) Find all .conf files under /etc directory, and copy these files inside ~/database directory.
- <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">d) Your manager needs a list of all .py files under the /opt directory.
-   Use long listing and redirect the output to ~/first_eval.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">c) Find all .conf files under /etc directory, and copy these files inside ~/database directory. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">d) Your manager needs a list of all .py files under the /opt directory. Use long listing and redirect the output to ~/first_eval.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">e) Locate a file named messages under the /var directory and append its metadata to ~/first_eval.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
     </div>
-  </div>
 
   <script>
     function showTab(id, el) {
@@ -170,4 +162,3 @@
   </script>
 </body>
 </html>
-
