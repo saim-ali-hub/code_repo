@@ -113,7 +113,7 @@
     <div id="task3" class="task">
       <h3>3. User Login Issue – Investigation Report (~/server-info.txt)</h3>
       <div class="subtask">a) Check how long the system linoop.ddns.net has been running, and store the output in ~/server-info.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">b) Verify whether the testuser account exists using appropriate command (without reading any file). Please add output in ~/server-info without overwriting its contents. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">b) Verify whether the test-user account exists using appropriate command (without reading any file). Please add output in ~/server-info.txt without overwriting its contents. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">c) Read the contents of /etc/resolv.conf and append them to ~/server-info.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">d) Extract all lines containing the string root from /etc/passwd and store them in the ~/server-info.txt file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">e) Identify how to extract both root and ssh patterns from /etc/passwd and append out in ~/server-info.txt. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
