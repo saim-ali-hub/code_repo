@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TECHNICAL SCREENING ROUND 1 - 2025</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+    }
+    .sidebar {
+      width: 250px;
+      background: #2c3e50;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+    .sidebar h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    .tab-button {
+      background: none;
+      border: none;
+      color: white;
+      text-align: left;
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .tab-button:hover, .tab-button.active {
+      background: #34495e;
+    }
+    .content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .task {
+      background: #f4f4f4;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      display: none;
+    }
+    .task.active {
+      display: block;
+    }
+    .task h3 {
+      margin-top: 0;
+    }
+    .subtask {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 20px;
+      flex-wrap: wrap;
+      word-break: break-word;
+    }
+    .subtask span {
+      flex-shrink: 0;
+    }
+    .buttons button {
+      margin-left: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      min-width: 80px;
+    }
+    .done {
+      background-color: #2ecc71;
+      color: white;
+    }
+    .revisit {
+      background-color: #e67e22;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Sections</h2>
+    <button class="tab-button" onclick="showTab('task1', this)">1. Remote Server Details</button>
+    <button class="tab-button" onclick="showTab('task2', this)">2. Terminal Operations</button>
+    <button class="tab-button" onclick="showTab('task3', this)">3. Ownership & Permissions</button>
+    <button class="tab-button" onclick="showTab('task4', this)">4. Analysis Tasks</button>
+    <button class="tab-button" onclick="showTab('task5', this)">5. Find Files Tasks</button>
+  </div>
+
+  <div class="content">
+    <div id="task1" class="task active">
+      <h3>1. SSH into linoop.ddns.net, Save to ~/remote_info.txt</h3>
+      <div class="subtask">a) Identify your user ID on the remote system. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">b) Print the OS release of the server and append it to the file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">c) Store the result of hostnamectl in the same file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">d) Append the attached block devices detail to the file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">e) Find the total number of groups defined on the system (in /etc/group) and store it. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+    </div>
+
+    <div id="task2" class="task">
+      <h3>2. Perform the Following Tasks on Your Terminal</h3>
+      <div class="subtask">a) Create a file named ~/report.txt having contents "technical screening is in progress". <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">b) Create a directory structure: ~/logs/archive/data. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">c) Copy ~/report.txt into ~/logs/archive/data/ <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">d) Create a symbolic link named loglink pointing to the archive directory which is inside ~/logs directory. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">e) Create a hard link sys-report pointing to report.txt file which in your home directory. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+    </div>
+
+    <div id="task3" class="task">
+      <h3>3. Manage Ownership, Permissions & File Actions (~/server-info.txt)</h3>
+      <div class="subtask">a) Create a directory structure ~/my-projects/final (should be nested). <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">b) In my-projects directory, create a file project1.txt and give read,write to user, write to group, none to others. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">c) Change the owner of file project1.txt to test-user, and group to admins. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">d) Now inside final directory, create two directories named module1 and module2, then recursively change owner of final directory to new-user and group to students. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">e) Create a directory ~/backup, copy module2 directory from ~/projects/final, inside ~/backup directory. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+    </div>
+
+    <div id="task4" class="task">
+      <h3>4. Extract required data and store output to ~/grep_summary.txt</h3>
+      <div class="subtask">a) Search for the string "ServerRoot" (case-insensitive) in /tmp/httpd.conf and store output in above mentioned file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">b) Append all lines containing the word nologin from /etc/passwd, in above file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">c) Display last first 2 lines of /etc/hosts file and append to the file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">d) Count the number of lines in /etc/nsswitch.conf and store that count in the same file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">e) Display last 5 lines of /etc/group file and append to the file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+    </div>
+
+    <div id="task5" class="task">
+      <h3>5. Store output find commands to ~/find_tasks.txt</h3>
+      <div class="subtask">a) Find all .conf files in /tmp directory modified in the last 5 days. Store in above mentioned file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">b) Find files in /etc/logrotate.d that were accessed in the less than 2 days and append the output. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">c) Find and copy all .service files from /etc/systemd to ~/service_bk (create if not exists). Please note no need to append info in ~/find_tasks.txt.
+ <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">d) Search /var for files >100MB, long list these files in human readable form and append the output. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">e) Find a file named shadow in your server and append its metadata to the same file. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+    </div>
+
+  <script>
+    function showTab(id, el) {
+      document.querySelectorAll('.task').forEach(t => t.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    document.querySelectorAll('.buttons button').forEach(button => {
+      button.addEventListener('click', function () {
+        const parent = button.closest('.subtask');
+        const allButtons = parent.querySelectorAll('button');
+        allButtons.forEach(btn => btn.classList.remove('done', 'revisit'));
+
+        if (button.textContent === 'Done') {
+          button.classList.add('done');
+        } else if (button.textContent === 'Revisit') {
+          button.classList.add('revisit');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
