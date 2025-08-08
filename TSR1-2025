@@ -116,7 +116,7 @@
       <div class="subtask">b) In my-projects directory, create a file project1.txt and change permission so that user can read,write, group should be able to  write only, no access for others. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">c) Change the owner of file project1.txt to test-user, and group to admins. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
       <div class="subtask">d) Now inside final directory, create two directories named module1 and module2, then recursively change owner of final directory to new-user and group to students. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
-      <div class="subtask">e) Create a directory ~/backup, copy module2 directory from ~/projects/final, inside ~/backup directory. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
+      <div class="subtask">e) Create a directory ~/backup, copy module2 directory from ~/my-projects/final, inside ~/backup directory. <span class="buttons"><button>Done</button><button>Revisit</button></span></div>
     </div>
 
     <div id="task4" class="task">
