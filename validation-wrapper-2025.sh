@@ -1,0 +1,120 @@
+#!/bin/bash
+
+# Ask for user name
+read -p "Enter your username: " USER_NAME
+USER_NAME=$(echo "$USER_NAME" | xargs)
+
+if [ -z "$USER_NAME" ]; then
+    echo "Error: User ID/Name is required to continue."
+    exit 1
+fi
+
+# Ask for student machine IP
+read -p "Enter your machine IP address: " MACHINE_IPV4
+MACHINE_IPV4=$(echo "$MACHINE_IPV4" | xargs)
+
+if [ -z "$MACHINE_IPV4" ]; then
+    echo "Error: Machine IPV4 is required to continue."
+    exit 1
+fi
+
+# Ask for lab number
+read -p "Enter lab number to validate (1, 2, 3, R1, 5, 6, R2, R3, 7, 8, 9, 10): " LAB_NUMBER
+LAB_NUMBER=$(echo "$LAB_NUMBER" | xargs)
+
+if [ -z "$LAB_NUMBER" ]; then
+  echo "Error: Lab number is required."
+  exit 1
+fi
+
+# === DO NOT source or run any validation locally on serverb ===
+# The validation code must run on servera (student machine).
+
+# Ensure validator SSH key exists on serverb
+if [ ! -f "$HOME/.ssh/id_rsa.pub" ]; then
+  echo "Generating SSH key for validator on serverb..."
+  ssh-keygen -t rsa -b 2048 -f "$HOME/.ssh/id_rsa" -N "" >/dev/null
+fi
+
+# Install key to student's machine (servera)
+echo "Sit tight validation of your lab is in process. Goodluck....."
+if ! ssh-copy-id -i "$HOME/.ssh/id_rsa.pub" "$USER_NAME@$MACHINE_IPV4" >/dev/null 2>&1; then
+  echo "Error: Could not copy SSH key to $USER_NAME@$MACHINE_IPV4. Is SSH running and password correct?"
+  exit 1
+fi
+
+# Quick connectivity check
+if ! ssh -o BatchMode=yes -o ConnectTimeout=5 "$USER_NAME@$MACHINE_IPV4" "echo ok" >/dev/null 2>&1; then
+  echo "Error: Cannot reach your lab machine ($MACHINE_IPV4)."
+  exit 1
+fi
+
+# --- Ship the private validation library to servera TEMPORARILY ---
+# We copy to a randomized /tmp path and delete it after execution so students can't keep it.
+REMOTE_LIB="/tmp/lab-test-2025.$RANDOM.$$"
+scp -q /usr/.lab/lab-test-2025.sh "$USER_NAME@$MACHINE_IPV4:$REMOTE_LIB"
+
+# --- Run the validation ON servera and then clean up the library ---
+ssh -o StrictHostKeyChecking=no "$USER_NAME@$MACHINE_IPV4" bash -s -- "$USER_NAME" "$LAB_NUMBER" "$REMOTE_LIB" << REMOTE_RUN
+
+#!/bin/bash
+
+USER_NAME="\$1"
+LAB_NUMBER="\$2"
+REMOTE_LIB="\$3"
+
+export STUDENT_NAME="\$USER_NAME"
+
+# Load validation functions
+source "\$REMOTE_LIB"
+
+# Run selected lab (do NOT exit early if one fails)
+set +e
+
+# Select and run the requested lab ON server
+case "\$LAB_NUMBER" in
+  1)  check_lab1_navigation ;;
+  2)  check_lab2_navigation ;;
+  3)  check_lab3_navigation ;;
+  R1) check_Review-lab1_2025 ;;
+  5)  check_lab5_permissions ;;
+  6)  check_lab6_ownership ;;
+  R2) check_review_lab2 ;;
+  R3) check_review_lab3 ;;
+  7)  check_lab7_find ;;
+  8)  check_lab8_grep_wc ;;
+  9)  check_lab9_link_mgt ;;
+  10) check_lab10_tar ;;
+  *)  echo -e "\e[33mInvalid lab number. Enter 1,2,3,R1,5,6,R2,R3,7,8,9,10\e[0m"; exit 2 ;;
+esac
+
+# Remove private validation lib
+rm -f "\$REMOTE_LIB" || true
+REMOTE_RUN
+
+# --- After remote validation run finishes ---
+
+     #Define master result file on serverb
+     MASTER_RESULT="/tmp/.systemdir/lab${LAB_NUMBER}_results.csv"
+
+     # Temporary file name for this run
+     TMP_RESULT="/tmp/.systemdir/remote/${USER_NAME}_lab${LAB_NUMBER}_$(date +%s).csv"
+
+     # Step 1: Copy result file from servera -> serverb
+     scp -q "$USER_NAME@$MACHINE_IPV4:/tmp/.syslog/lab${LAB_NUMBER}_result.csv" "$TMP_RESULT"
+
+     if [ $? -eq 0 ]; then
+         chmod 666 "$TMP_RESULT"
+
+     # Step 2: Append to master CSV (create if not exists)
+     if [ ! -f "$MASTER_RESULT" ]; then
+         head -n 1 "$TMP_RESULT" > "$MASTER_RESULT"
+     fi
+     tail -n +2 "$TMP_RESULT" >> "$MASTER_RESULT"
+
+     # Step 3: Cleanup temp file on serverb
+     rm -rf "$TMP_RESULT"
+
+     # Step 4: Cleanup result file from servera
+     ssh -o StrictHostKeyChecking=no "$USER_NAME@$MACHINE_IPV4" "rm -rf /tmp/.syslog/"
+     fi
