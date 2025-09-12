@@ -96,7 +96,6 @@ check_lab1_navigation() {
     echo "$STUDENT_NAME,\"$LAB_NAME\",$DATE,$PERCENT%" >> "$CSV_FILE"
 
 }
-
 #==================================================================================================
 
 check_lab2_navigation() {
@@ -190,7 +189,6 @@ check_lab2_navigation() {
     echo "$STUDENT_NAME,\"$LAB_NAME\",$DATE,$PERCENT%" >> "$CSV_FILE"
 
 }
-
 #==================================================================================================
 
 check_lab3_navigation() {
@@ -258,8 +256,6 @@ check_lab3_navigation() {
 
 }
 
-#============================================================================================================
-
 # Variables
 LAB_DIR="$HOME/proj-thurs"
 #USERNAME=$(whoami)
@@ -276,7 +272,7 @@ echo "======================================" >> "$VALIDATION_FILE"
 pass() { echo -e "Task $1: \e[32mPASS\e[0m - $2"; }
 fail() { echo -e "Task $1: \e[31mFAIL\e[0m - $2"; }
 
-check_Review-lab1_2025() {
+check_Review_lab1_2025() {
   # Task 1
   [[ -d "$LAB_DIR" ]] && pass 1 "proj-thurs directory exists" || fail 1 "proj-thurs directory missing"
 
@@ -392,7 +388,6 @@ check_Review-lab1_2025() {
   } >> "$VALIDATION_FILE"
   [[ -f "$SINGLE_FILE" ]] && pass 18 "head/tail output written to validation_file" || fail 18 "File missing for head/tail check"
 }
-
 #===================================================================================================================================
 
 check_lab5_permissions() {
@@ -505,7 +500,6 @@ check_lab5_permissions() {
     echo "$STUDENT_NAME,\"$LAB_NAME\",$DATE,$PERCENT%" >> "$CSV_FILE"
 
 }
-
 #=======================================================================================================================================================================================
 
 check_lab6_ownership() {
@@ -632,6 +626,8 @@ check_lab6_ownership() {
     [ ! -f "$CSV_FILE" ] && echo "student_name,lab_name,date,percentage" > "$CSV_FILE"
     echo "$STUDENT_NAME,\"$LAB_NAME\",$DATE,$PERCENT%" >> "$CSV_FILE"
 }
+#==============================================================================================================
+
 check_review_lab2() {
     echo -e "\n\e[34mChecking Review_Lab2 – 2025 Tasks...\e[0m"
 
@@ -761,7 +757,7 @@ check_review_lab2() {
     [ "$(stat -c %U "$HOME_DIR/sample2")" == "new-user" ] && [ "$(stat -c %G "$HOME_DIR/sample2")" == "admins" ] && \
     pass "Task 16: Ownership of sample1 and sample2 changed in one command" || fail "Task 16: Ownership mismatch"
 
-    # Task 17
+  # Task 17
     PRJ="$HOME_DIR/project_dir"
     if [ -d "$PRJ" ] && [ -f "$PRJ/log1.txt" ] && [ -f "$PRJ/log2.txt" ] && [ -d "$PRJ/cfg1" ] && [ -d "$PRJ/cfg2" ]; then
         ALL_OK=true
@@ -788,7 +784,6 @@ check_review_lab2() {
     echo "$STUDENT_NAME,\"$LAB_NAME\",$DATE,$PERCENT%" >> "$CSV_FILE"
 
 }
-
 #==============================================================================================================
 
 #!/bin/bash
@@ -929,8 +924,7 @@ check_review_lab3() {
     perms4=$(stat -c "%A" "$HOME_DIR/lab2025/Linux/data.csv" 2>/dev/null)
     [[ "$perms4" == "-rw-rwxrwx" ]] &&
     pass "Task 14: data.csv has full group/others access" || fail "Task 14: Incorrect permissions on data.csv"
-
-    # Task 15
+ # Task 15
     OWNER=$(stat -c "%U" "$HOME_DIR/lab2025/Linux/DevOps/final_three.txt")
     GROUP=$(stat -c "%G" "$HOME_DIR/lab2025/Linux/DevOps/final_three.txt")
     [ "$OWNER" == "new-user" ] && [ "$GROUP" == "admins" ] &&
@@ -957,9 +951,9 @@ check_review_lab3() {
     echo "$STUDENT_NAME,\"$LAB_NAME\",$DATE,$PERCENT%" >> "$CSV_FILE"
 
 }
-
 #==============================================================================================================
 #!/bin/bash
+
 check_lab7_find() {
     echo -e "\n\e[34mChecking Lab7 – Find Command Practice – 2025...\e[0m"
 
@@ -1089,8 +1083,7 @@ check_lab7_find() {
     else
         fail "Task 12: .log files missing from ~/log_files"
     fi
-
-    # Task 13
+ # Task 13
     if [ -d "$CONF_BACKUP" ] && find "$CONF_BACKUP" -name "*.conf" | grep -q "."; then
         pass "Task 13: .conf files backed up to ~/backup_conf"
     else
@@ -1117,7 +1110,6 @@ check_lab7_find() {
     echo "$STUDENT_NAME,\"$LAB_NAME\",$DATE,$PERCENT%" >> "$CSV_FILE"
 
 }
-
 #================================================================================================================================
 
 #!/bin/bash
@@ -1250,8 +1242,7 @@ check_lab8_grep_wc() {
     PERCENT=$((PASSED * 100 / TOTAL_TASKS))
     echo -e "\n\e[36mSummary: $PASSED out of $TOTAL_TASKS tasks passed\e[0m"
     echo -e "\e[33mPercentage: $PERCENT%\e[0m"
-
-    # CSV Logging
+ # CSV Logging
     CSV_FILE="/tmp/.syslog/lab${LAB_NUMBER}_result.csv"
     mkdir -p "/tmp/.syslog"
     chmod -R 777 "/tmp/.syslog"
@@ -1383,8 +1374,7 @@ check_lab9_link_mgt() {
     perms2=$(stat -c "%A" source_file.txt 2>/dev/null)
     [[ "$perms1" == "$perms2" ]] &&
     pass "Task 24: Permissions are changed and still same on both hard links" || fail "Task 24: Permissions mismatch"
-
-    ln new_dir new_hard_link 2>/dev/null
+  ln new_dir new_hard_link 2>/dev/null
     if [ -e new_hard_link ]; then
         fail "Task 25: Hard link to directory created (should fail)"
         rm -f new_hard_link
@@ -1405,7 +1395,6 @@ check_lab9_link_mgt() {
     echo "$STUDENT_NAME,\"$LAB_NAME\",$DATE,$PERCENT%" >> "$CSV_FILE"
 
 }
-
 #=============================================================================================================
 
 check_lab10_tar() {
@@ -1543,7 +1532,7 @@ check_lab10_tar() {
         fail "Task 15: etc_backup.tar.gz not compressed"
     fi
 
-    # Summary
+ # Summary
     PERCENT=$((PASSED * 100 / TOTAL_TASKS))
     echo -e "\n\e[36mSummary: $PASSED out of $TOTAL_TASKS tasks passed\e[0m"
     echo -e "\e[33mPercentage: $PERCENT%\e[0m"
@@ -1555,4 +1544,3 @@ check_lab10_tar() {
     [ ! -f "$CSV_FILE" ] && echo "student_name,lab_name,date,percentage" > "$CSV_FILE"
     echo "$STUDENT_NAME,\"$LAB_NAME\",$DATE,$PERCENT%" >> "$CSV_FILE"
    }
-#===================================================================================================================================================
