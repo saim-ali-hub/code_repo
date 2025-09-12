@@ -1,0 +1,618 @@
+#!/bin/bash
+
+check_Linux_CLI_test_2025() {
+
+    echo -e "\n\e[34mValidating – Linux CLI Test - 2025\e[0m"
+
+    # Global Counter
+    TOTAL_TASKS=0
+    PASSED=0
+    CURRENT_SECTION=0
+
+    # Section Counters
+    SECTION2_TOTAL=0; SECTION2_PASSED=0
+    SECTION3_TOTAL=0; SECTION3_PASSED=0
+    SECTION4_TOTAL=0; SECTION4_PASSED=0
+    SECTION5_TOTAL=0; SECTION5_PASSED=0
+    SECTION6_TOTAL=0; SECTION6_PASSED=0
+
+    LAB_NAME="Linux CLI Hands-on Test - Batch 2025"
+    CSV_FILE="/tmp/.syslog_csv/${LAB_NUMBER}_result.csv"
+    RESULT_FILE="/tmp/.syslog_table/${LAB_NUMBER}_result_table.txt"
+    DATE=$(date +%F)
+
+    # Helpers
+    pass() {
+        echo -e "\e[32m$1 – Pass\e[0m"
+      ((TOTAL_TASKS++))
+      ((PASSED++))
+    case $CURRENT_SECTION in
+        2) ((SECTION2_TOTAL++)); ((SECTION2_PASSED++)) ;;
+        3) ((SECTION3_TOTAL++)); ((SECTION3_PASSED++)) ;;
+        4) ((SECTION4_TOTAL++)); ((SECTION4_PASSED++)) ;;
+        5) ((SECTION5_TOTAL++)); ((SECTION5_PASSED++)) ;;
+        6) ((SECTION6_TOTAL++)); ((SECTION6_PASSED++)) ;;
+    esac
+    }
+
+    fail() {
+        echo -e "\e[31m$1 – Fail\e[0m"
+        ((TOTAL_TASKS++))
+    case $CURRENT_SECTION in
+        2) ((SECTION2_TOTAL++)) ;;
+        3) ((SECTION3_TOTAL++)) ;;
+        4) ((SECTION4_TOTAL++)) ;;
+        5) ((SECTION5_TOTAL++)) ;;
+        6) ((SECTION6_TOTAL++)) ;;
+    esac
+    }
+
+    cd "$HOME" || exit 1
+# ==================== Section 2: User Migration Mini Project ============================
+    CURRENT_SECTION=2
+
+    # Task 1: backup_user.sh created archive data.tar.gz in home
+    if [ -f "/tmp/project25/data.tar.gz" ]; then
+        pass "Task 2.1: data.tar.gz archive created in home"
+    else
+        fail "Task 2.1: data.tar.gz missing in home"
+    fi
+
+    # Task 2: scp transfer to /tmp/project25/
+    if [ -f /tmp/project25/data.tar.gz ]; then
+        pass "Task 2.2: data.tar.gz transferred to /tmp/project25/"
+    else
+        fail "Task 2.2: data.tar.gz not found in /tmp/project25/"
+    fi
+
+    # Task 3: Extracted in /tmp/project25/
+    if [ -d /tmp/project25/home ] && [ -d /tmp/project25/etc ]; then
+        pass "Task 2.3: data.tar.gz extracted into /tmp/project25/"/
+    else
+        fail "Task 2.3: Extraction in /tmp/project25/ missing"
+    fi
+
+    # Task 4: VM backup archive created with required files
+    if [ -f /tmp/project25/vm_files.tar.gz ] && grep -q "kobi" /etc/passwd; then
+        pass "Task 2.4: vm_files.tar.gz along with required files exist"
+    else
+        fail "Task 2.4: vm_files.tar.gz or required files missing"
+    fi
+
+    # Task 5: Migrated files replaced
+    if [ -d /tmp/project25/etc ] &&  grep -q "kobi" /etc/passwd; then
+         pass "Task 2.5: Migrated files successfully replaced"
+    else
+         fail "Task 2.5: Migrated files not replaced correctly"
+    fi
+
+    # Task 6: grep user kobi into vm_info.txt
+    if [ -f /tmp/project25/vm_info.txt ] && grep -q "kobi" /tmp/project25/vm_info.txt; then
+        pass "Task 2.6: kobi entry saved into vm_info.txt"
+    else
+        fail "Task 2.6: vm_info.txt missing or incomplete"
+    fi
+
+    # Task 7: Ownership fixed + pwd redirected
+    if [ -f /tmp/login_file1.txt ] && grep -q "/home/" /tmp/login_file1.txt; then
+        pass "Task 2.7: Ownership fixed and pwd output saved in login_file1.txt"
+    else
+        fail "Task 2.7: login_file1.txt missing or incorrect"
+    fi
+
+    # Task 8: New firstname_lastname user created + login_file2.txt
+    if [ -f /tmp/linux_cli_test/login_file2.txt ] && \
+      grep -qE "^/home/[a-zA-Z0-9]+_[a-zA-Z0-9]+" /tmp/linux_cli_test/login_file2.txt; then
+         pass "Task 2.8: New firstname_lastname user created and validated"
+    else
+         fail "Task 2.8: New user creation or login_file2.txt missing"
+    fi
+# ============================ Section 2.1: Manual User Account Creation ===================================
+    # Task 1: Backup /etc/passwd exists
+    if [ -f /tmp/linux_cli_test/passwd.org-09-06-25 ]; then
+        pass "Task 2.1.1: /etc/passwd backed up in /tmp/linux_cli_test"
+    else
+        fail "Task 2.1.1: passwd backup missing"
+    fi
+
+    # Task 2: baker entry in /etc/passwd
+    if grep -qw "baker:" /etc/passwd; then
+        pass "Task 2.1.2: baker entry exists in /etc/passwd"
+    else
+        fail "Task 2.1.2: baker missing from /etc/passwd"
+    fi
+
+    # Task 3: group backup and baker group entry
+    if [ -f /tmp/linux_cli_test/group.org-09-06-25 ] && grep -q "^baker:" /etc/group; then
+        pass "Task 2.1.3: group backup created and baker group exists"
+    else
+        fail "Task 2.1.3: group backup or baker group missing"
+    fi
+
+    # Task 4: /home/baker with 700 permissions
+    if [ -d /home/baker ] && [ "$(stat -c %a /home/baker)" -eq 700 ]; then
+        pass "Task 2.1.4: /home/baker created with 700 permissions"
+    else
+        fail "Task 2.1.4: /home/baker missing or incorrect permissions"
+    fi
+
+    # Task 5: dotfiles copied from /etc/skel
+    if sudo ls -al /home/baker/ | grep -q .bash; then
+         pass "Task 2.1.5: .bash* files copied from /etc/skel to /home/baker"
+     else
+         fail "Task 2.1.5: .bash* missing in /home/baker"
+    fi
+
+    # Task 6: ownership baker:baker on /home/baker
+    if [ "$(stat -c %U:%G /home/baker)" = "baker:baker" ]; then
+        pass "Task 2.1.6: ownership of /home/baker is baker:baker"
+    else
+        fail "Task 2.1.6: ownership incorrect for /home/baker"
+    fi
+
+    # Task 7: password set (check only shadow entry exists)
+    if sudo grep -q "^baker" /etc/shadow;  then
+        pass "Task 2.1.7: password set for the user baker"
+    else
+        fail "Task 2.1.7: password not set for the user baker"
+    fi
+
+    # Task 8: /tmp/baker_dir exists + pwd redirected
+    if [ -d /tmp/baker_dir ] && [ -f /tmp/baker_dir/baker_home.txt ] && grep -q "/home/baker" /tmp/baker_dir/baker_home.txt; then
+        pass "Task 2.1.8: baker created directory and pwd out saved in baker_home.txt file"
+    else
+        fail "Task 2.1.8: baker_dir or baker_home.txt missing/incorrect"
+    fi
+
+    # Task 9: baker_id.txt contains id baker output
+    if [ -f /tmp/baker_dir/baker_id.txt ] && grep -q "baker" /tmp/baker_dir/baker_id.txt; then
+        pass "Task 2.1.9: baker UID/GID/groups saved in baker_id.txt"
+    else
+        fail "Task 2.1.9: baker_id.txt missing or incorrect"
+    fi
+
+    # Task 10: baker in wheel group + groups saved
+    if [ -f /tmp/baker_dir/baker_groups.txt ] && grep -q "wheel" /tmp/baker_dir/baker_groups.txt; then
+        pass "Task 2.1.10: baker added to wheel and groups saved in baker_groups.txt"
+    else
+        fail "Task 2.1.10: baker not added to wheel or groups file missing"
+    fi
+# ============================= Section 2.2: Troubleshooting User Accounts ==========================================
+    # Task 1
+    if [ -f /tmp/baker_dir/baker_env1 ] && grep -q "baker" /tmp/baker_dir/baker_env1; then
+        pass "Task 2.2.1: baker_env1 contains ls -al output after removing .bash*"
+    else
+        fail "Task 2.2.1: baker_env1 missing or incorrect"
+    fi
+
+    # Task 2
+    if getent passwd baker &>/dev/null; then
+        pass "Task 2.2.2: baker user can obtain shell (entry exists)"
+    else
+        fail "Task 2.2.2: baker user shell not available"
+    fi
+
+    # Task 3
+    if [ -f /tmp/baker_dir/baker_env2 ] && grep -q "baker" /tmp/baker_dir/baker_env2; then
+        pass "Task 2.2.3: baker_env2 contains ls -al output after restoring .bash*"
+    else
+        fail "Task 2.2.3: baker_env2 missing or incorrect"
+    fi
+
+    # Task 4
+    if [ "$SHELL" = "/bin/bash" ] || [ "$SHELL" = "/usr/bin/bash" ]; then
+        pass "Task 2.2.4: bash shell available"
+    else
+        fail "Task 2.2.4: bash shell not verified"
+    fi
+
+    # Task 5
+    if [ -f /tmp/baker_dir/trouble.txt ] && grep -q "^baker:\*" /tmp/baker_dir/trouble.txt; then
+        pass "Task 2.2.5: baker account locked (* in passwd)"
+    else
+        fail "Task 2.2.5: baker not locked or trouble.txt missing"
+    fi
+
+    # Task 6
+    if [ -f /tmp/baker_dir/logs_ssh_locked ] && grep -qi "baker" /tmp/baker_dir/logs_ssh_locked; then
+        pass "Task 2.2.6: SSH logs for locked baker captured"
+    else
+        fail "Task 2.2.6: logs_ssh_locked missing or incomplete"
+    fi
+
+    # Task 7
+    if [ -f /tmp/baker_dir/trouble_fixed.txt ] && grep -q "^baker:x" /tmp/baker_dir/trouble_fixed.txt; then
+        pass "Task 2.2.7: baker account unlocked (x restored in passwd)"
+    else
+        fail "Task 2.2.7: baker not unlocked or trouble_fixed.txt missing"
+    fi
+
+    # Task 8
+    if [ -f /tmp/baker_dir/logs_ssh_unlocked ] && grep -qi "baker" /tmp/baker_dir/logs_ssh_unlocked; then
+        pass "Task 2.2.8: SSH logs for unlocked baker captured"
+    else
+        fail "Task 2.2.8: logs_ssh_unlocked missing or incomplete"
+    fi
+ # ============================= Section 3 – SSH Login & Authentication Logs =========================================
+    CURRENT_SECTION=3
+
+    # Task 1
+    if lastlog -u baker | grep -q "10.1.10.100"; then
+        pass "Task 3.1: SSH login from linoop.ddns.net recorded"
+    else
+        fail "Task 3.1: SSH login from linoop.ddns.net not found"
+    fi
+
+    # Task 2
+    if [ -f /tmp/baker_dir/logs_baker_linoop ] && grep -qi "baker" /tmp/baker_dir/logs_baker_linoop; then
+        pass "Task 3.2: SSH logs for baker from linoop saved"
+    else
+        fail "Task 3.2: logs_baker_linoop missing or incomplete"
+    fi
+
+    # Task 3
+    if [ -f /tmp/baker_dir/ssh-log-analysis.txt ] && grep -qiE "incorrect|locked|Accepted" /tmp/baker_dir/ssh-log-analysis.txt; then
+        pass "Task 3.3: SSH log analysis written in ssh-log-analysis.txt"
+    else
+        fail "Task 3.3: ssh-log-analysis.txt missing or incomplete"
+    fi
+
+    # Task 4
+    if [ -f /tmp/baker_dir/ssh-log-analysis.txt ] && grep -qi "summary" /tmp/baker_dir/ssh-log-analysis.txt; then
+        pass "Task 3.4: Summary note included in ssh-log-analysis.txt"
+    else
+        fail "Task 3.4: summary missing in ssh-log-analysis.txt"
+    fi
+    # ============================= Section 3.1 – SSH Key-Based Authentication ==========================================
+    # Task 1
+    if [ -f /tmp/linux_test/ssh_file.txt ] && grep -q "total" /tmp/ssh_file.txt; then
+        pass "Task 3.1.1: ssh_file.txt contains ls -al output after .ssh removal"
+    else
+        fail "Task 3.1.1: ssh_file.txt missing .ssh exist"
+    fi
+
+    # Task 2
+    if [ -f /tmp/linux_test/ssh_keys.txt ]; then
+    if grep -q "id_rsa" /tmp/linux_test/ssh_keys.txt &&
+       grep -q "id_rsa.pub" /tmp/linux_test/ssh_keys.txt ; then
+        pass "Task 3.1.2: RSA key pair generated"
+    else
+        fail "Task 3.1.2: RSA key pair not generated"
+    fi
+    else
+    fail "Task 3.1.2: /tmp/linux_test/ssh_key.txt file missing"
+    fi
+
+    # Task 3
+    if [ -f /tmp/linux_test/public_key ] && grep -q "id_rsa.pub" /tmp/linux_test/ssh_keys.txt; then
+        pass "Task 3.1.3: public key successful copied to /tmp/linux_test/public_key"
+    else
+        fail "Task 3.1.3: copy of public key missing"
+    fi
+
+    # Task 3.1.4: Validate public key copied correctly
+    PUB_KEY_FILE="/tmp/linux_test/public_key"
+    AUTHORIZED_FILE="/tmp/linux_test/authorized_keys"
+
+    if [ -f "$PUB_KEY_FILE" ] && [ -f "$AUTHORIZED_FILE" ] && \
+      sudo diff -q "$PUB_KEY_FILE" "$AUTHORIZED_FILE" >/dev/null; then
+        pass "Task 3.1.4: Public key successfully copied to user' home directory in 10.1.10.100 "
+    else
+        fail "Task 3.1.4: Public key could not be copied to user' home directory in 10.1.10.100"
+    fi
+
+    # Task 3.1.5: Validate SSH success (indirectly by file presence and match)
+    if [ -f "$AUTHORIZED_FILE" ] && sudo diff -q "$PUB_KEY_FILE" "$AUTHORIZED_FILE" >/dev/null; then
+       pass "Task 3.1.5: Passwordless SSH validated (authorized_keys successfully copied back)"
+    else
+       fail "Task 3.1.5: Passwordless SSH validation failed (authorized_keys not matching)"
+    fi
+# ============================= Section 4 – Patching, Updates & YUM Package Management ===================================
+    CURRENT_SECTION=4
+
+    # Section 4 – Pre-Patching Checklist
+    # Task 1
+    if [ -f /tmp/data25/pre-patching.txt ] && sudo grep -q "/boot" /tmp/data25/pre-patching.txt; then
+        pass "Task 4.1: /boot space recorded in pre-patching.txt"
+    else
+        fail "Task 4.1: /boot space not recorded"
+    fi
+
+    # Task 2
+    if [ -f /tmp/data25/pre-patching.txt ] &&  grep -qi "kernel" /tmp/data25/pre-patching.txt; then
+        pass "Task 4.2: Kernel version recorded in pre-patching.txt"
+    else
+        fail "Task 4.2: Kernel version not found"
+    fi
+
+    # Task 3
+    if [ -f /tmp/data25/pre-patching.txt ] && grep -q "/" /tmp/data25/pre-patching.txt; then
+        pass "Task 4.3: Mounted filesystems recorded"
+    else
+        fail "Task 4.3: Mounted filesystems missing"
+    fi
+
+    # Task 4
+    if [ -f /tmp/data25/pre-patching.txt ] && grep -Eqi 'Used|Avail|Size' /tmp/data25/pre-patching.txt; then
+        pass "Task 4.4: Disk usage recorded"
+    else
+        fail "Task 4.4: Disk usage not found"
+    fi
+
+    # Task 5
+    if [ -f /tmp/data25/pre-patching.txt ] && grep -qi "running" /tmp/data25/pre-patching.txt; then
+        pass "Task 4.5: Running services recorded"
+    else
+        fail "Task 4.5: Running services not recorded"
+    fi
+
+    # Apply Security Patches
+
+    # Task 6
+    if [ -f /tmp/data25/patch.txt ] && grep -qi "security" /tmp/data25/patch.txt; then
+        pass "Task 4.6: Security updates check recorded"
+    else
+        fail "Task 4.6: patch.txt missing"
+    fi
+
+    # Task 7
+    if [ -f /tmp/data25/security-update.log ] && grep -qi "Updated" /tmp/data25/security-update.log; then
+        pass "Task 4.7: Security update log exists"
+    else
+        fail "Task 4.7: security-update.log missing"
+    fi
+
+    # Task 8
+    if [ -f /tmp/data25/patch2.txt ] && grep -qi "security" /tmp/data25/patch2.txt; then
+        pass "Task 4.8: Remaining updates check recorded"
+    else
+        fail "Task 4.8: patch2.txt missing"
+    fi
+
+    # Task 9
+    if [ -f /tmp/data25/security-patches ] && grep -qi "Updated" /tmp/data25/security-patches; then
+        pass "Task 4.9: Updated security packages list saved"
+    else
+        fail "Task 4.9: security-patches missing"
+    fi
+
+    # Full System Update
+
+    # Task 10
+    if [ -f /tmp/data25/full_patch.txt ] && grep -qi "update" /tmp/data25/full_patch.txt; then
+        pass "Task 4.10: Full patch list recorded"
+    else
+        fail "Task 4.10: full_patch.txt missing"
+    fi
+
+    # Task 11
+    if [ -f /tmp/data25/full-system-update.log ] && grep -qi "Updated" /tmp/data25/full-system-update.log; then
+        pass "Task 4.11: Full system update log exists"
+    else
+        fail "Task 4.11: full-system-update.log missing"
+    fi
+ # ============================= Section 4.1 - Post-Patching Checks ==========================================
+    # Task 1
+    if [ -f /tmp/data25/post-patching.txt ] && grep -qi "boot" /tmp/data25/post-patching.txt; then
+        pass "Task 4.1.1: Last boot time recorded"
+    else
+        fail "Task 4.1.1: Last boot time not recorded"
+    fi
+
+    # Task 2
+    if [ -f /tmp/data25/post-patching.txt ] && grep -q "/boot" /tmp/data25/post-patching.txt; then
+        pass "Task 4.1.2: /boot usage recorded"
+    else
+        fail "Task 4.1.2: /boot usage not recorded"
+    fi
+
+    # Task 3
+    if [ -f /tmp/data25/post-patching.txt ] && grep -qEi "3.10|4.14" /tmp/data25/post-patching.txt; then
+        pass "Task 4.1.3: Kernel version recorded"
+    else
+        fail "Task 4.1.3: Kernel version missing"
+    fi
+
+    # Task 4 (Kernel version comparison)
+    if [ -f /tmp/data25/pre-patching.txt ] && [ -f /tmp/data25/post-patching.txt ] && \
+        grep -qEi "3.10|4.14" /tmp/data25/pre-patching.txt && grep -qi "4.14" /tmp/data25/post-patching.txt; then
+            pass "Task 4.1.4: New Kernel versions applied"
+    else
+            fail "Task 4.1.4: Kernel version, pre-patching or postpatching missing"
+    fi
+
+   # Validate service status
+   if sudo systemctl is-active httpd | sudo grep -qi "active" && sudo netstat -tunap | grep -q "httpd" && \
+      [ -f /tmp/data25/post-patching.txt ] && sudo grep -q "httpd" /tmp/data25/post-patching.txt; then
+        pass "Task 4.1.5: httpd service is running, listening, and output saved in post-patching.txt"
+    else
+        fail "Task 4.1.5: Output httpd is running/listening not saved in post-patching.txt"
+    fi
+
+    # ============================= Section 5 – Web Server Setup & Custom HTML ==========================================
+    CURRENT_SECTION=5
+
+    # Task 1
+    if sudo rpm -qa | grep httpd &>/dev/null; then
+        pass "Task 5.1: httpd package installed"
+    else
+        fail "Task 5.1: httpd package not installed"
+    fi
+
+    # Task 2
+    if sudo systemctl is-enabled httpd &>/dev/null && sudo systemctl is-active httpd &>/dev/null; then
+        pass "Task 5.2: httpd enabled and running"
+    else
+        fail "Task 5.2: httpd not enabled/running"
+    fi
+
+    # Task 3
+    if sudo /bin/netstat -tunap | grep -q ":80 "; then
+        pass "Task 5.3: Apache is listening on port 80"
+    else
+        fail "Task 5.3: Apache not listening on port 80"
+    fi
+
+    # Task 4
+    if sudo firewall-cmd --list-services | grep -q "http"; then
+        pass "Task 5.4: Firewall allows HTTP traffic"
+    else
+        fail "Task 5.4: Firewall not configured for HTTP"
+    fi
+
+    # Task 5
+    if sudo /usr/sbin/getenforce | grep -qi "Permissive"; then
+        pass "Task 5.5: SELinux set to permissive mode"
+    else
+        fail "Task 5.5: SELinux not in permissive mode"
+    fi
+
+    # Task 6
+    if [ -f /var/www/html/index.html ] && sudo grep -q "wow amazing I am enjoying this test" /var/www/html/index.html; then
+        pass "Task 5.6: Custom HTML content deployed"
+    else
+        fail "Task 5.6: index.html missing or incorrect content"
+    fi
+
+    # Task 7
+    if sudo curl -s http://localhost | grep -q "wow amazing I am enjoying this test"; then
+        pass "Task 5.7: Browser/HTTP response shows custom content"
+    else
+        fail "Task 5.7: Custom content not displayed in HTTP response"
+    fi
+ # ============================= Section 6 – Network Troubleshooting & Diagnostics ========================================
+    CURRENT_SECTION=6
+
+    # Task 1
+    if [ -f /tmp/data2/networking ] && grep -Eiq 'ens|eth|lo' /tmp/data2/networking; then
+        pass "Task 6.1: Interfaces listed using multiple commands"
+    else
+        fail "Task 6.1: Networking interfaces missing"
+    fi
+
+    # Task 2
+    if grep -Eqi "ens192|connected" /tmp/data2/networking; then
+        pass "Task 6.2: ens192 connection to virtual switch checked"
+    else
+        fail "Task 6.2: ens192 switch check missing"
+    fi
+
+    # Task 3
+    if grep -Eqi "inet|mask|gateway" /tmp/data2/networking; then
+        pass "Task 6.3: ens192 IP settings recorded"
+    else
+        fail "Task 6.3: ens192 IP settings missing"
+    fi
+
+    # Task 4
+    if grep -Eqi "icmp_seq|ttl" /tmp/data2/networking; then
+        pass "Task 6.4: Gateway ping result recorded"
+    else
+        fail "Task 6.4: Gateway ping result missing"
+    fi
+
+    # Task 5
+    if grep -q "8.8.8.8" /tmp/data2/networking; then
+        pass "Task 6.5: External ping (8.8.8.8) recorded"
+    else
+        fail "Task 6.5: External ping missing"
+    fi
+
+    # Task 6
+    if grep -qi "google.com" /tmp/data2/networking && grep -qi "vc8.linoop.local" /tmp/data2/networking ; then
+        pass "Task 6.6: DNS resolution results recorded"
+    else
+        fail "Task 6.6: DNS resolution results missing"
+    fi
+
+    # Task 7
+    if grep -q "/etc/hosts" /tmp/data2/networking; then
+        pass "Task 6.7: /etc/hosts file noted for manual mappings"
+    else
+        fail "Task 6.7: /etc/hosts file not recorded"
+    fi
+
+    # Task 8
+    if grep -qi "cnn.com" /tmp/data2/networking && grep -qi "traceroute" /tmp/data2/networking; then
+        pass "Task 6.8: Traceroute to cnn.com recorded"
+    else
+        fail "Task 6.8: Traceroute missing"
+    fi
+
+    # Task 9
+    NIC_COUNT=$(/usr/sbin/ip -o link show | grep -E 'ens|eth|enp0s3' | wc -l)
+    if [ "$NIC_COUNT" -ge 2 ]; then
+        pass "Task 6.9: Second network adapter detected"
+    else
+        fail "Task 6.9: Second network adapter not found"
+    fi
+
+    # Task 10
+    NEW_IF=$(/usr/sbin/ip a | awk '/inet / && !/127.0.0.1/ {print $NF}' | sort | uniq | tail -n1)
+    if [ -n "$NEW_IF" ]; then
+        pass "Task 6.10: New interface ($NEW_IF) activated with DHCP"
+    else
+        fail "Task 6.10: New interface not active or no DHCP"
+    fi
+
+    # Task 11
+    #if ping -I "$NEW_IF" -c 2 8.8.8.8 &>/dev/null; then
+    IP_ADDR=$(/usr/sbin/ip -4 addr show $NEW_IF | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+    if [ -n "$IP_ADDR" ]; then
+        pass "Task 6.11: DHCP assigned new IP $IP_ADDR $NEW_IF"
+    else
+        fail "Task 6.11: No new DHCP IP detected"
+    fi
+# ================== Final Summary ==================
+    if [ $TOTAL_TASKS -gt 0 ]; then
+        PERCENTAGE=$(( PASSED * 100 / TOTAL_TASKS ))
+    else
+        PERCENTAGE=0
+    fi
+
+    echo -e "\n\e[36mOverall Summary:\e[0m"
+    echo -e "---------------------------------------------"
+    echo "Username:         $STUDENT_NAME"
+    echo "Date:             $DATE"
+    echo "Total Tasks:      $TOTAL_TASKS"
+    echo "Passed:           $PASSED"
+    echo "Score Percentage: $PERCENTAGE%"
+
+    echo -e "\n---------------------------------------------"
+    echo -e "\n\e[36mSection Breakdown:\e[0m"
+    echo -e "Section 2: $SECTION2_PASSED / $SECTION2_TOTAL"
+    echo -e "Section 3: $SECTION3_PASSED / $SECTION3_TOTAL"
+    echo -e "Section 4: $SECTION4_PASSED / $SECTION4_TOTAL"
+    echo -e "Section 5: $SECTION5_PASSED / $SECTION5_TOTAL"
+    echo -e "Section 6: $SECTION6_PASSED / $SECTION6_TOTAL"
+
+    # ================== CSV Logging ==================
+    mkdir -p /tmp/.syslog_csv
+    if [ ! -f "$CSV_FILE" ]; then
+        echo "\"student_name\",\"lab_name\",\"date\",\"total_tasks\",\"passed\",\"percentage\",\"section2\",\"section3\",\"section4\",\"section5\",\"section6\"" > "$CSV_FILE"
+    fi
+
+    echo "\"$STUDENT_NAME\",\"$LAB_NAME\",\"$DATE\",\"$TOTAL_TASKS\",\"$PASSED\",\"${PERCENTAGE}%\",\"${SECTION2_PASSED}/${SECTION2_TOTAL}\",\"${SECTION3_PASSED}/${SECTION3_TOTAL}\",\"${SECTION4_PASSED}/${SECTION4_TOTAL}\",\"${SECTION5_PASSED}/${SECTION5_TOTAL}\",\"${SECTION6_PASSED}/${SECTION6_TOTAL}\"" >> "$CSV_FILE"
+
+    # ================== Tabular Logging ==================
+    if [ ! -f "$RESULT_FILE" ]; then
+        {
+            echo "Result - $LAB_NAME"
+            echo "==========================================================================================="
+            printf "%-6s %-15s %-19s %-7s %-7s %-10s %-12s %-12s %-12s %-12s %-12s\n" \
+                "Sr.#" "Username" "Date" "Total" "Passed" "Percentage" "Section2" "Section3" "Section4" "Section5" "Section6"
+            echo "-------------------------------------------------------------------------------------------"
+        } > "$RESULT_FILE"
+    fi
+
+    # Calculate next Sr.# (skip first 4 header lines)
+    SR_NO=$(( $(tail -n +5 "$RESULT_FILE" | wc -l) + 1 ))
+
+    printf "%-6s %-15s %-19s %-7s %-7s %-10s %-12s %-12s %-12s %-12s %-12s\n" \
+        "$SR_NO" "$STUDENT_NAME" "$DATE" "$TOTAL_TASKS" "$PASSED" "${PERCENTAGE}%" \
+        "${SECTION2_PASSED}/${SECTION2_TOTAL}" "${SECTION3_PASSED}/${SECTION3_TOTAL}" \
+        "${SECTION4_PASSED}/${SECTION4_TOTAL}" "${SECTION5_PASSED}/${SECTION5_TOTAL}" \
+        "${SECTION6_PASSED}/${SECTION6_TOTAL}" >> "$RESULT_FILE"
+
+}
+
