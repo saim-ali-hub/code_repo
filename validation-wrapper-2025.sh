@@ -19,7 +19,7 @@ if [ -z "$MACHINE_IPV4" ]; then
 fi
 
 # Ask for lab number
-read -p "Enter lab number to validate (1, 2, 3, R1, 5, 6, R2, R3, 7, 8, 9, 10): " LAB_NUMBER
+read -p "Enter lab number to validate ( 1, 2, 3, R1, 5, 6, R2, R3, 7, 8, 9, 10, ): " LAB_NUMBER
 LAB_NUMBER=$(echo "$LAB_NUMBER" | xargs)
 
 if [ -z "$LAB_NUMBER" ]; then
@@ -32,12 +32,12 @@ fi
 
 # Ensure validator SSH key exists on serverb
 if [ ! -f "$HOME/.ssh/id_rsa.pub" ]; then
-  echo "Generating SSH key for validator on serverb..."
+  echo "Generating SSH key for validator on serverb..." >/dev/null
   ssh-keygen -t rsa -b 2048 -f "$HOME/.ssh/id_rsa" -N "" >/dev/null
 fi
 
 # Install key to student's machine (servera)
-echo "Sit tight validation of your lab is in process. Goodluck....."
+echo "Sit tight validation of your Linux_CLI_test-2025 is in process. Goodluck....."
 if ! ssh-copy-id -i "$HOME/.ssh/id_rsa.pub" "$USER_NAME@$MACHINE_IPV4" >/dev/null 2>&1; then
   echo "Error: Could not copy SSH key to $USER_NAME@$MACHINE_IPV4. Is SSH running and password correct?"
   exit 1
@@ -56,7 +56,6 @@ scp -q /usr/.lab/lab-test-2025.sh "$USER_NAME@$MACHINE_IPV4:$REMOTE_LIB"
 
 # --- Run the validation ON servera and then clean up the library ---
 ssh -o StrictHostKeyChecking=no "$USER_NAME@$MACHINE_IPV4" bash -s -- "$USER_NAME" "$LAB_NUMBER" "$REMOTE_LIB" << REMOTE_RUN
-
 #!/bin/bash
 
 USER_NAME="\$1"
@@ -64,6 +63,10 @@ LAB_NUMBER="\$2"
 REMOTE_LIB="\$3"
 
 export STUDENT_NAME="\$USER_NAME"
+
+# --- Ensure required directories exist ---
+mkdir -p /tmp/.syslog_csv
+mkdir -p /tmp/.syslog_table
 
 # Load validation functions
 source "\$REMOTE_LIB"
@@ -76,7 +79,7 @@ case "\$LAB_NUMBER" in
   1)  check_lab1_navigation ;;
   2)  check_lab2_navigation ;;
   3)  check_lab3_navigation ;;
-  R1) check_Review-lab1_2025 ;;
+  R1) check_Review_lab1_2025 ;;
   5)  check_lab5_permissions ;;
   6)  check_lab6_ownership ;;
   R2) check_review_lab2 ;;
@@ -85,6 +88,7 @@ case "\$LAB_NUMBER" in
   8)  check_lab8_grep_wc ;;
   9)  check_lab9_link_mgt ;;
   10) check_lab10_tar ;;
+#linux_test) check_Linux_CLI_test_2025 ;;
   *)  echo -e "\e[33mInvalid lab number. Enter 1,2,3,R1,5,6,R2,R3,7,8,9,10\e[0m"; exit 2 ;;
 esac
 
@@ -95,16 +99,19 @@ REMOTE_RUN
 # --- After remote validation run finishes ---
 
      #Define master result file on serverb
-     MASTER_RESULT="/tmp/.systemdir/lab${LAB_NUMBER}_results.csv"
+     MASTER_RESULT="/tmp/.systemdir/csv/${LAB_NUMBER}_results.csv"
+     MASTER_RESULT_TAB="/tmp/.systemdir/table/${LAB_NUMBER}_results_table.txt"
 
      # Temporary file name for this run
-     TMP_RESULT="/tmp/.systemdir/remote/${USER_NAME}_lab${LAB_NUMBER}_$(date +%s).csv"
+     TMP_RESULT="/tmp/.systemdir/remote_csv/${USER_NAME}_${LAB_NUMBER}_$(date +%s).csv"
+     TMP_RESULT_TAB="/tmp/.systemdir/remote_table/${USER_NAME}_${LAB_NUMBER}_table_$(date +%s).txt"
 
      # Step 1: Copy result file from servera -> serverb
-     scp -q "$USER_NAME@$MACHINE_IPV4:/tmp/.syslog/lab${LAB_NUMBER}_result.csv" "$TMP_RESULT"
+     scp -q "$USER_NAME@$MACHINE_IPV4:/tmp/.syslog_csv/${LAB_NUMBER}_result.csv" "$TMP_RESULT"
+     scp -q "$USER_NAME@$MACHINE_IPV4:/tmp/.syslog_table/${LAB_NUMBER}_result_table.txt" "$TMP_RESULT_TAB"
 
-     if [ $? -eq 0 ]; then
-         chmod 666 "$TMP_RESULT"
+  if [ $? -eq 0 ]; then
+       chmod 666 "$TMP_RESULT"
 
      # Step 2: Append to master CSV (create if not exists)
      if [ ! -f "$MASTER_RESULT" ]; then
@@ -112,9 +119,16 @@ REMOTE_RUN
      fi
      tail -n +2 "$TMP_RESULT" >> "$MASTER_RESULT"
 
+     if [ ! -f "$MASTER_RESULT_TAB" ]; then
+         head -n 4 "$TMP_RESULT_TAB" > "$MASTER_RESULT_TAB"
+     fi
+     tail -n +5 "$TMP_RESULT_TAB" >> "$MASTER_RESULT_TAB"
+
+
      # Step 3: Cleanup temp file on serverb
      rm -rf "$TMP_RESULT"
+     rm -rf "$TMP_RESULT_TAB"
 
      # Step 4: Cleanup result file from servera
-     ssh -o StrictHostKeyChecking=no "$USER_NAME@$MACHINE_IPV4" "rm -rf /tmp/.syslog/"
-     fi
+     ssh -o StrictHostKeyChecking=no "$USER_NAME@$MACHINE_IPV4" "rm -rf /tmp/.syslog_csv /tmp/.syslog_table"
+ fi
