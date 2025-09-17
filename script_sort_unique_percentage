@@ -1,0 +1,78 @@
+#!/bin/bash
+# Final clean script for Linux CLI Test Results
+
+INPUT="linux_test_results_table.txt"
+OUTPUT="sorted_unique_percentage.txt"
+
+awk '
+BEGIN { OFS="\t" }
+
+# Skip title / header / junk lines
+/^#/ { next }
+/^-+/ { next }
+/^Result/ { next }
+$1=="Sr.#" { next }
+$1=="Username" { next }        # <── this removes the duplicate Username header
+$2=="Linux" { next }
+
+{
+    user=$2
+    date=$3
+    total=$4
+    passed=$5
+    perc=$6
+    gsub("%","",perc)
+    perc+=0
+
+    # If user not seen OR better percentage OR same % but newer date → keep
+    if (!(user in best_perc) || perc > best_perc[user] || (perc == best_perc[user] && date > best_date[user])) {
+        best_perc[user]=perc
+        best_date[user]=date
+
+        f_user[user]=user
+        f_date[user]=date
+        f_total[user]=total
+        f_passed[user]=passed
+        f_perc[user]=$6   # keep with % sign
+        f_s2[user]=$7
+        f_s3[user]=$8
+        f_s4[user]=$9
+        f_s5[user]=$10
+        f_s6[user]=$11
+    }
+}
+END {
+    # Proper title block
+    print "Result - Linux CLI Hands-on Test - Batch 2025" > "'"$OUTPUT"'"
+    print "#==================================================================================================================================" >> "'"$OUTPUT"'"
+    printf "%-5s %-15s %-18s %-7s %-7s %-11s %-11s %-11s %-11s %-11s %-11s\n", \
+           "Sr.#","Username","Date","Total","Passed","Percentage","Section2","Section3","Section4","Section5","Section6" >> "'"$OUTPUT"'"
+    print "#-----------------------------------------------------------------------------------------------------------------------------------" >> "'"$OUTPUT"'"
+
+    # Collect users
+    count=0
+    for (u in f_user) {
+        count++
+        users[count]=u
+        percs[count]=best_perc[u]
+        dates[count]=best_date[u]
+    }
+
+    # Sort by percentage desc, then date desc
+    for (i=1; i<=count; i++) {
+        for (j=i+1; j<=count; j++) {
+            if ( (percs[i] < percs[j]) || (percs[i]==percs[j] && dates[i] < dates[j]) ) {
+                tmp=users[i]; users[i]=users[j]; users[j]=tmp
+                t=percs[i]; percs[i]=percs[j]; percs[j]=t
+                d=dates[i]; dates[i]=dates[j]; dates[j]=d
+            }
+        }
+    }
+
+    # Print sorted results
+    for (i=1; i<=count; i++) {
+        u=users[i]
+        printf "%-5s %-15s %-18s %-7s %-7s %-11s %-11s %-11s %-11s %-11s %-11s\n", \
+               i, f_user[u], f_date[u], f_total[u], f_passed[u], f_perc[u], f_s2[u], f_s3[u], f_s4[u], f_s5[u], f_s6[u] >> "'"$OUTPUT"'"
+    }
+}' "$INPUT"
