@@ -1,0 +1,102 @@
+#!/bin/bash
+# Process Linux CLI Test Results
+# Shows Attempt1% (lowest), Attempt2% (middle), Attempt3% (highest)
+# If <3 attempts: pad with 0%. If >3 attempts: use only top 3 scores.
+# Sections come from highest attempt. Sorted by Attempt3% desc.
+
+INPUT="linux_test_results_table.txt"
+OUTPUT="sorted_all_attempts_percentages.txt"
+
+awk '
+BEGIN { OFS="\t" }
+
+# Skip title / header / junk lines
+/^#/ { next }
+/^-+/ { next }
+/^Result/ { next }
+$1=="Sr.#" { next }
+$1=="Username" { next }
+$2=="Linux" { next }
+
+{
+    user=$2
+    date=$3
+    perc=$6
+    gsub("%","",perc)
+    perc+=0
+
+    attempts[user,count[user]++]=perc
+    dates[user,perc]=date
+
+    s2[user,perc]=$7
+    s3[user,perc]=$8
+    s4[user,perc]=$9
+    s5[user,perc]=$10
+    s6[user,perc]=$11
+}
+
+END {
+    # Title block
+    print "Result - Linux CLI Hands-on Test - Batch 2025" > "'"$OUTPUT"'"
+    print "#==================================================================================================================================" >> "'"$OUTPUT"'"
+    printf "%-5s %-15s %-12s %-12s %-12s %-11s %-11s %-11s %-11s %-11s\n", \
+           "Sr.#","Username","Attempt1%","Attempt2%","Attempt3%","Section2","Section3","Section4","Section5","Section6" >> "'"$OUTPUT"'"
+    print "#-----------------------------------------------------------------------------------------------------------------------------------" >> "'"$OUTPUT"'"
+
+    n=0
+    for (u in count) {
+        n++
+        users[n]=u
+
+        # collect and sort attempts descending
+        m=count[u]
+        split("", arr)
+        for (i=0; i<m; i++) arr[i+1]=attempts[u,i]
+
+        for (i=1; i<=m; i++) {
+            for (j=i+1; j<=m; j++) {
+                if (arr[i] < arr[j]) { tmp=arr[i]; arr[i]=arr[j]; arr[j]=tmp }
+            }
+        }
+
+        # handle cases
+        if (m>=3) {
+            a3=arr[1]; a2=arr[2]; a1=arr[3]    # top 3
+        } else if (m==2) {
+            a3=arr[1]; a2=arr[2]; a1=0
+        } else if (m==1) {
+            a3=arr[1]; a2=0; a1=0
+        }
+
+        attempt1[u]=a1 "%"
+        attempt2[u]=a2 "%"
+        attempt3[u]=a3 "%"
+
+        # sections from highest attempt
+        sec2[u]=s2[u,a3]
+        sec3[u]=s3[u,a3]
+        sec4[u]=s4[u,a3]
+        sec5[u]=s5[u,a3]
+        sec6[u]=s6[u,a3]
+
+        highperc[u]=a3
+    }
+
+    # sort users by Attempt3% desc
+    for (i=1; i<=n; i++) {
+        for (j=i+1; j<=n; j++) {
+            if (highperc[users[i]] < highperc[users[j]]) {
+                tmp=users[i]; users[i]=users[j]; users[j]=tmp
+            }
+        }
+    }
+
+    # print results
+    sr=1
+    for (i=1; i<=n; i++) {
+        u=users[i]
+        printf "%-5s %-15s %-12s %-12s %-12s %-11s %-11s %-11s %-11s %-11s\n", \
+               sr, u, attempt1[u], attempt2[u], attempt3[u], sec2[u], sec3[u], sec4[u], sec5[u], sec6[u] >> "'"$OUTPUT"'"
+        sr++
+    }
+}' "$INPUT"
