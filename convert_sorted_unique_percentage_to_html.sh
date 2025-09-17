@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Input and output files
-RESULT_FILE="/tmp/.systemdir/table/linux_test_results_table.txt"
-HTML_FILE="/var/www/html/result/linux_test_results_table.html"
+RESULT_FILE="/tmp/.systemdir/table/sorted_unique_percentage.txt"
+HTML_FILE="/var/www/html/result/sorted_unique_percentages.html"
 TMP_SORTED=$(mktemp)
 
 # Extract heading safely (remove leading/trailing spaces)
