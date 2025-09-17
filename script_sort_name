@@ -1,0 +1,54 @@
+#!/bin/bash
+# Process Linux CLI Test Results
+# Keeps only the highest percentage attempt per student (latest date if tie)
+
+INPUT="linux_test_results_table.txt"
+OUTPUT="sorted_unique_students.txt"
+
+awk '
+BEGIN { OFS="\t" }
+
+# Skip headers, separators, or title lines
+/^#/ { next }                                # any line starting with #
+/^-+/ { next }                               # separator lines
+/^Result/ { next }                           # the title line
+$1=="Username" { next }                      # skip duplicate header row completely
+$2=="Linux" { next }                         # skip junk "- Linux CLI Hands-on Test -" line
+
+{
+    user=$2
+    date=$3
+    total=$4
+    passed=$5
+    perc=$6
+    gsub("%","",perc)
+
+    full_line=$0
+
+    if (!(user in best_perc) || perc > best_perc[user] || (perc == best_perc[user] && date > best_date[user])) {
+        best_perc[user]=perc
+        best_date[user]=date
+        best_line[user]=full_line
+    }
+}
+END {
+    # Proper title block
+    print "Result - Linux CLI Hands-on Test - Batch 2025" > "'"$OUTPUT"'"
+    print "#==================================================================================================================================" >> "'"$OUTPUT"'"
+    printf "%-5s %-15s %-18s %-7s %-7s %-11s %-11s %-11s %-11s %-11s %-11s\n", \
+           "Sr.#","Username","Date","Total","Passed","Percentage","Section2","Section3","Section4","Section5","Section6" >> "'"$OUTPUT"'"
+    print "#-----------------------------------------------------------------------------------------------------------------------------------" >> "'"$OUTPUT"'"
+
+    # Student results
+    n=asorti(best_line, sorted_users)
+    sr=1
+    for (i=1; i<=n; i++) {
+        split(best_line[sorted_users[i]], arr, /[ \t]+/)
+        # only print if this is not the duplicate header row
+        if (arr[2] != "Username") {
+            printf "%-5s %-15s %-18s %-7s %-7s %-11s %-11s %-11s %-11s %-11s %-11s\n", \
+                   sr, arr[2],arr[3],arr[4],arr[5],arr[6],arr[7],arr[8],arr[9],arr[10],arr[11] >> "'"$OUTPUT"'"
+            sr++
+        }
+    }
+}' "$INPUT"
